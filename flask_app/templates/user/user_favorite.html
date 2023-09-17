@@ -1,0 +1,99 @@
+{% extends 'base/user_return_base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-10">
+            <h1>Favorites</h1>
+        </div>
+    </div>    
+    {% for fav in favs %}
+    {% if fav.name != None %}
+    <div class="row justify-content-center">
+        <div class="col-10 border rounded shadow-sm mt-3 mb-3">
+            <div class="row mt-3 mb-3">
+                <div class="col">
+                    <h3>{{fav.name}}</h3>
+                </div>
+                <div class="col"></div>
+                <div class="col-auto me-5">
+                    <form action="/{{user.id}}/{{fav.id}}/delete_favorite" method="post">
+                        <input type="submit" value="Favorited!" class="btn btn-warning ps-5 pe-5">
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Date Added:</p>
+                </div>
+                <div class="col">
+                    Location:
+                </div>
+                <div class="col">
+                    Price Level:
+                </div>
+                <div class="col">
+                    <p>Rating:</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>{{fav.created_at}}</p>
+                </div>
+                <div class="col">
+                    <p>{{fav.location}}</p>
+                </div>
+                <div class="col">
+                    <p>{{fav.price_level}}</p>
+                </div>
+                <div class="col">
+                    <p>{{fav.rating}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <h3>No Favorites? Find one!!</h3>
+        </div>
+    </div>
+    
+    {% endif %}
+    {% endfor %}
+    <div class="row justify-content-center">
+        <div class="col-10 mt-3">
+            <p>History:</p>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Rating</th>
+                        <th>Favorite?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for res in history %}
+                    <tr>
+                        <th>{{res.name}}</th>
+                        <td>{{res.location}}</td>
+                        <td>{{res.rating}}</td>
+                        {% if res.get_fav({'user_id':user.id, 'history_id':res.id}) %}
+                        <td><form action="/{{user.id}}/{{res.id}}/delete_favorite" method="post">
+                            <input type="submit" value="&#10004;" class="btn btn-warning">
+                        </form></td>
+                        {% else %}
+                        <td><form action="/{{user.id}}/{{res.id}}/add_favorite" method="post">
+                            <input type="submit" value="&#43" class="btn btn-warning">
+                        </form></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+S
+{% endblock %}

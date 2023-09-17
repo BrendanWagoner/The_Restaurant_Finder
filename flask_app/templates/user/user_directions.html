@@ -1,0 +1,34 @@
+{% extends 'base/user_return_base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col">
+            <h1>Directions:</h1>
+        </div>
+        <div class="col mt-1">
+            <h3>Like the Restaurant?</h3>
+            <p>Add it to your favorites! <a href="/{{user.id}}/favorite">Here</a></p>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-6">
+            <p>{{directions}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <iframe
+                width="600"
+                height="450"
+                style="border:0"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed/v1/directions?origin={{origin}}&destination=place_id:{{place_id}}&key={{key}}">
+            </iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base/user_base.html' %}
+
+    {% block content %}
+    <div class="container">
+        <div class="row mt-5">
+            {% with messages = get_flashed_messages(category_filter=["search_error"]) %}
+                    {% if messages %}
+                    <div class="alert alert-danger">                            
+                        {% for message in messages %}            
+                            <p>{{message}}</p>                   
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% endwith %}
+            <div class="col-4">
+                <h2>Where are you located?</h2>
+            </div>
+            <div class="col-3"></div>
+            <div class="col-4">
+                <h3>Favorites</h3>
+                <div class="border">
+                    {% for fav in favs %}
+                    <div class="row">
+                        <a href="/{{user.id}}/directions/{{fav.origin}}/{{fav.place_id}}">{{fav.name}}</a>
+                    </div>
+                    {% endfor %}
+                </div>
+                <a href="/{{user.id}}/favorite">Add Favorite</a>
+            </div>
+        </div>  
+        <div class="row mt-3">
+            <div class="col-4">
+                <form onsubmit="search(event)" id="search-form">
+                    <label for="address" class="form-label">Address:</label>
+                    <input type="text" class="form-control" name="address">
+                    <label for="city" class="form-label mt-2">City:</label>
+                    <input type="text" class="form-control" name="city">
+                    <label for="state" class="form-label">State:</label>
+                    <input type="text" class="form-control mt-2" name="state">
+                    <input type="submit" value="Find!" class="btn btn-primary mt-3">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function search(e) {
+            e.preventDefault();
+            var full_address = e.target.address.value + " " + e.target.city.value + " " + e.target.state.value
+            // const addressValue = document.querySelector("input[name=address]").value
+            // window.location.href = `/search/`+ encodeURIComponent(addressValue)
+            
+            window.location.href = `/{{user.id}}/search/`+ encodeURIComponent(full_address)
+            return false;
+        }
+    </script>
+{% endblock %}
