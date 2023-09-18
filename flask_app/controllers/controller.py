@@ -35,7 +35,7 @@ def api_call_render(address):
         print(results[1])
         return render_template("restaurant.html", google_response=results)
     else:
-        flash(geocoding_api_results, 'search_error')
+        flash(f'{geocoding_api_results}', 'search_error')
         # flash('Not a valid addresss, try again', 'search_error')
         return redirect('/search')
 
