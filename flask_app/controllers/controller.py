@@ -23,7 +23,7 @@ def search_index():
 @app.route('/search/<address>', methods=['GET'])
 def api_call_render(address):
     geocoding_api_results = requests.get(f'https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={os.environ.get("GEOCODING_API_KEY")}')
-
+    print(geocoding_api_results)
     if geocoding_api_results.json()['results']:
         geocoding_results = geocoding_api_results.json()['results'][0]['geometry']['location']
         # print(geocoding_api_results.json())
@@ -35,7 +35,8 @@ def api_call_render(address):
         print(results[1])
         return render_template("restaurant.html", google_response=results)
     else:
-        flash('Not a valid addresss, try again', 'search_error')
+        flash(geocoding_api_results, 'search_error')
+        # flash('Not a valid addresss, try again', 'search_error')
         return redirect('/search')
 
 @app.route('/directions/<address>/<string:restaurant_place_id>')
