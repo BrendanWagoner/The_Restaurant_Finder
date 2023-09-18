@@ -15,6 +15,7 @@ def login_index():
 
 @app.route('/register', methods=['POST'])
 def register():
+    print(request.form)
     if not user.User.validate_user(request.form):
         return redirect('/')
     
@@ -37,14 +38,14 @@ def register():
 @app.route('/login', methods=['POST'])
 def login():
     data = {
-        'email': request.form['email']
+        'email': request.form['user-email']
     }
     u = user.User.get_one_by_email(data)
 
     if not u:
         flash('invalid email/password', 'login_error')
         return redirect('/')
-    if not bcrypt.check_password_hash(u.password, request.form['password']):
+    if not bcrypt.check_password_hash(u.password, request.form['user-password']):
         flash('invalid email/password', 'login_error')
         return redirect('/')
     session['user_id'] = u.id

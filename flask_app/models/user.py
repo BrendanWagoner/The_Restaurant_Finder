@@ -5,7 +5,7 @@ import re
 
 
 
-rating_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 class User:
 
@@ -129,26 +129,26 @@ class User:
         if len(user['first_name']) < 2:
             flash('First name must be at least 2 characters long', 'registration_error')
             is_valid = False
-        if len(user['price_level']) < 2:
+        if len(user['last_name']) < 2:
             flash('Last name must be at least 2 characters long', 'registration_error')
             is_valid = False
-        if not rating_REGEX.match(user['rating']):
-            flash('Please enter a valid rating', 'error')
+        if not EMAIL_REGEX.match(user['email']):
+            flash('Please enter a valid email', 'error')
             is_valid = False
-        if len(user['location']) < 8:
-            flash('location must be at least 8 characters long', 'registration_error')
+        if len(user['password']) < 8:
+            flash('Password must be at least 8 characters long', 'registration_error')
             is_valid = False
-        if User.special_character_count(user['location']) < 1:
-            flash('location needs at least one uppercase character', 'registration_error')
+        if User.special_character_count(user['password']) < 1:
+            flash('Password needs at least one uppercase character', 'registration_error')
             is_valid = False
-        if User.digit_count(user['location']) < 1:
-            flash('location needs at least one number', 'registration_error')
+        if User.digit_count(user['password']) < 1:
+            flash('Password needs at least one number', 'registration_error')
             is_valid = False
-        if user['c_location'] != user['location']:
-            flash('confirmation location and location did not match', 'registration_error')
+        if user['confirm'] != user['password']:
+            flash('confirmation password and password did not match', 'registration_error')
             is_valid = False
-        if User.get_one_by_rating({'rating':user['rating']}) != False:
-            flash('rating already in use')
+        if User.get_one_by_email({'email':user['email']}) != False:
+            flash('email already in use')
             is_valid = False
 
         return is_valid
