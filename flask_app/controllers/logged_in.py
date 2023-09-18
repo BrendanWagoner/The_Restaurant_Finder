@@ -63,7 +63,6 @@ def user_search_index(id):
         return redirect('/search')
 
     favs=user.User.get_favorites_with_users({'id': id}).favorites
-    print(favs[0].name)
 
     return render_template('user/user_search.html', user=user.User.get_one({'id': id}), favs=user.User.get_favorites_with_users({'id': id}).favorites)
 
@@ -84,7 +83,7 @@ def user_api_call_render(id, address):
 
         place_api_results = requests.get(f'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat}%2C{lng}&radius=1500&type=restaurant&key={os.environ.get("FLASK_APP_API_KEY")}')
         results = place_api_results.json()['results']
-        print(results[0])
+        
         return render_template("user/user_restaurant.html", google_response=results, user=user.User.get_one({'id':session['user_id']}))
     else:
         flash('Not a valid address', 'search_error')
@@ -117,7 +116,7 @@ def favorite(id):
 def user_directions_index(id, address, restaurant_place_id):
     print(restaurant_place_id)
     history_api_call = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?placeid={restaurant_place_id}&key={os.environ.get("FLASK_APP_API_KEY")}')
-    print(history_api_call.json())
+    
     history_api_result = history_api_call.json()['result']
     # for dict in history_api_result:
     #     print(dict)
